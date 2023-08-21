@@ -1,20 +1,36 @@
 import './App.css';
-import Buttom from "./Components/Buttom/Buttom";
 import Card from "./Components/Card/Card";
-const { getData } = require("./db/db");
+import Cart from "./Components/Cart/Cart";
+import {useState} from "react";
 
+const { getData } = require("./db/db");
 const foods = getData();
 
 function App() {
+
+    const [cartItems, setCartItems] = useState([])
+    const onAdd = (food) => {
+        const exist = cartItems.find((x) => x.id === food.id);
+        if (exist) {
+            setCartItems(
+                cartItems.map((x) =>
+                    x.id === food.id ? { ...exist, quantity: exist.quantity + 1 } : x
+                )
+            );
+        } else {
+            setCartItems([...cartItems, { ...food, quantity: 1 }]);
+        }
+    };
   return (
     <>
-        Eu estou aqui !
-        <Buttom title={'Adicionar'} disable={false} type={'add'}/>
-        <Buttom title={'Remover'} disable={false} type={'remove'}/>
-        <Buttom title={'Checkout'} disable={false} type={'checkout'}/>
-        {foods.map(food =>{
-            return <Card food={food} key={food.id}/>
-        })}
+        <h1 className="heading">Pedir Comida</h1>
+        <Cart cartItems={cartItems} />
+        <div className="cards__container">
+            {foods.map(food =>{
+                return <Card food={food} key={food.id}/>
+            })}
+        </div>
+
     </>
   );
 }
