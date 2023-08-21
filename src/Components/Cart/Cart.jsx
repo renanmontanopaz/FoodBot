@@ -2,7 +2,7 @@ import React from "react";
 import './Cart.css';
 import Buttom from "../Buttom/Buttom";
 
-function Cart({cartItems, onAdd, onRemove, onCheckout }){
+function Cart({cartItems, onCheckout }){
 
     const totalPrice = cartItems.reduce((a,c) => a + c.price * c.quantity, 0);
 
